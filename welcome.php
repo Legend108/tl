@@ -16,9 +16,48 @@ session_start();
     <title>Home</title>
   </head>
   <body>
-    <?php require "./partials/navbar.php" ?>
-
-    <h1>Welcome <?php echo $_SESSION['username'] ?></h1>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+  <a class="navbar-brand" href="#">CodeLead</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a href="/mydashboard/welcome.php" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+            <a href="/mydashboard/login.php" class="nav-link">Login</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a href="/mydashboard/signup.php" class="nav-link">Sign Up</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a href="/mydashboard/logout.php" class="nav-link">Logout</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a href="/mydashboard/profile.php" class="nav-link">Edit Profile</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<?php 
+        if($_SESSION['emailVerified'] == false) {
+          echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <span>Verify that you are not a <a href="/mydashboard/verify.php">bot</a></span> 
+        </div>';
+        }
+      ?>
+    <div class="container">
+      <h2>Welcome <?php echo $_SESSION['username'] ?> lol</h2>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
 </html>
