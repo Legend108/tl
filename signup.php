@@ -1,22 +1,39 @@
 <?php
  include 'partials/connect.php';
+ session_start();
+ $errorValue = '';
+ $errorDetails = '';
  if($_SERVER['REQUEST_METHOD'] =='POST') {
  $alert = false;
  $username = $_POST["username"];
  $password = $_POST["password"];
  $confirmed_password = $_POST["cpassword"];
+ $email = $_POST["email"];
  $exists = false;
+ $confirmUnusedUsername = "SELECT * FROM `users` WHERE username='$username'";
+ $quered = mysqli_query($connected, $confirmUnusedUsername);
+ $numFoundConfirm = mysqli_num_rows($quered);
+
+ if($numFoundConfirm > 0) {
+  //  $exists = true;
+   $errorDetails = "Username has been taken";
+ } else {
+  //  $exists = false;
  if($username and $password and $confirmed_password) {
-     if(($password == $confirmed_password) and $exists == false) {
+     if(($password == $confirmed_password)) {
          $squery = "INSERT INTO `users` (`username`, `password`, `dt`) VALUES ('$username', '$password', current_timestamp());";
 
          $res = mysqli_query($connected, $squery);
 
          if($res) {
              $alert = true;
-         }
-     }
+             $_SESSION['emailVerified'] = false;
+        }
+     } else {
+       $errorDetails = "Password's do not match";
+    }
  }
+}
 }
 ?>
 
@@ -29,7 +46,7 @@
     <title>Sign Up</title>
   </head>
   <body>
-  <?php require "./partials/navbar.php" ?>
+  <?php require "./partials/navbar.php"; ?>
  <?php
  if($_SERVER['REQUEST_METHOD'] =='POST') {
  if($alert) {
@@ -40,7 +57,7 @@
  } else {
      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-     <span>Your password might not have matched, please <strong>signup</strong> again 
+     <span>' . $errorDetails . '</span>
    </div>';
  }
 }
